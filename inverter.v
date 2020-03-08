@@ -24,15 +24,15 @@ endmodule
 
 //16 bit inverter test module
 module main;
-reg[15:0] i = 16'hff;
+reg[15:0] i;
 wire[15:0] out ;
 inv16 zap(i, out);
   initial 
     begin
-    #10
-      $display("Hello, World");
-      $display("%h", i);
-      $display("%h", out);
+      i = 360;
+      #10
+      $display("Initial value is %b", i);
+      $display("Output value is %b", out);
       $finish ;
     end
 
