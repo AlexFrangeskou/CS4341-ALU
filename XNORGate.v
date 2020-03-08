@@ -1,5 +1,5 @@
 // Yashal Saleem - CS 4341
-// XNOR Gate (Incomplete)
+// XNOR Gate 
 module xnor16bit(out, A, B);
 	input [15:0] A;
 	input [15:0] B;
@@ -26,8 +26,8 @@ endmodule
 
 // test module
 module testbench();
-	reg[15:0] in1 = 16'h3efd;
-	reg[15:0] in2 = 16'h1234;
+	reg[15:0] in1;
+	reg[15:0] in2;
 	wire[15:0] xnout;
 	
 	// xnor of the two hex values
@@ -36,11 +36,13 @@ module testbench();
 	// start display
 	initial
 		begin
+			in1 = 1256;
+			in2 = 3564;
 			#10;
 			$display("XNOR of two hex values");
-			$display("%h", in1);
-			$display("%h", in2);
-			$display("%h", xnout);
+			$display("%b", in1);
+			$display("%b", in2);
+			$display("%b", xnout);
 			$finish;
 		end
 endmodule

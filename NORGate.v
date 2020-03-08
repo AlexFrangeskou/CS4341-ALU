@@ -1,5 +1,5 @@
 // Yashal Saleem - CS 4341
-// NOR Gate (Incomplete)
+// NOR Gate 
 module nor16bit(out, A, B);
 	input [15:0] A;
 	input [15:0] B;
@@ -26,21 +26,24 @@ endmodule
 
 // test module
 module testbench();
-	reg[15:0] in1 = 16'h1234;
-	reg[15:0] in2 = 16'h4321;
+	reg[15:0] in1;
+	reg[15:0] in2;
 	wire[15:0] nout;
-	
+
 	// Nor of these two
 	nor16bit instan(nout, in1, in2);
 	
 	// start display
 	initial
 		begin
+			
+			in1 = 4660;
+			in2 = 17185;	
 			#10;
 			$display("NOR of two hex values");
-			$display("%h", in1);
-			$display("%h", in2);
-			$display("%h", nout);
+			$display("Input 1 is %b", in1);
+			$display("Input 2 is %b", in2);
+			$display("Output is  %b", nout);
 			$finish;
 		end
 endmodule
