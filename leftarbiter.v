@@ -12,10 +12,9 @@ endmodule
 
 // test module
 module testbench();
-	reg [15:0] inputLarb = a6'b0000010000000000;
+	reg [15:0] inputLarb = 15'b0000010000000101;
 	wire [15:0] outputLarb;
 	
-	// Right Arbiter instance
 	leftarbiter instan(outputLarb, inputLarb);
 	
 	// start display
