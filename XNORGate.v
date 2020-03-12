@@ -40,9 +40,9 @@ module testbench();
 			in2 = 3564;
 			#10;
 			$display("XNOR of two hex values");
-			$display("%b", in1);
-			$display("%b", in2);
-			$display("%b", xnout);
+			$display("Input 1 is %b", in1);
+			$display("Input 2 is %b", in2);
+			$display("Output is %b", xnout);
 			$finish;
 		end
 endmodule
