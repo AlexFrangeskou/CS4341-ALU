@@ -141,7 +141,6 @@ HalfAdder1Bit ha21(a[20],b[20],carry[20],s[20]);
 HalfAdder1Bit ha22(a[21],b[21],carry[21],s[21]);
 HalfAdder1Bit ha23(a[22],b[22],carry[22],s[22]);
 HalfAdder1Bit ha24(a[23],b[23],carry[23],s[23]);
-HalfAdder1Bit ha25(a[24],b[24],carry[24],s[24]);
 
 endmodule
 
@@ -159,8 +158,8 @@ assign temp[1]=a[0]&b[1];
 assign temp[2]=a[1]&b[1];
 //stage two 
 // using two half adders 
-ha z1(temp[0],temp[1],c[1],temp[3]);
-ha z2(temp[2],temp[3],c[2],c[3]);
+HalfAdder1Bit z1(temp[0],temp[1],c[1],temp[3]);
+HalfAdder1Bit z2(temp[2],temp[3],c[2],c[3]);
 endmodule
 
 
@@ -222,10 +221,10 @@ wire [7:0]q4;
 wire [11:0]q5;
 wire [11:0]q6;
 // using 4 4x4 multipliers
-vedic_4_x_4 z1(a[3:0],b[3:0],q0[15:0]);
-vedic_4_x_4 z2(a[7:4],b[3:0],q1[15:0]);
-vedic_4_x_4 z3(a[3:0],b[7:4],q2[15:0]);
-vedic_4_x_4 z4(a[7:4],b[7:4],q3[15:0]);
+vedic_4_x_4 z1(a[3:0],b[3:0],q0[7:0]);
+vedic_4_x_4 z2(a[7:4],b[3:0],q1[7:0]);
+vedic_4_x_4 z3(a[3:0],b[7:4],q2[7:0]);
+vedic_4_x_4 z4(a[7:4],b[7:4],q3[7:0]);
 
 // stage 1 adders 
 assign temp1 ={4'b0,q0[7:4]};
@@ -286,19 +285,21 @@ assign c[31:8]=q6[23:0];
 
 endmodule
 
-
+//
 module main;
-reg[3:0] in1, in2;
-wire[7:0] out ;
-vedic_4_x_4 zap(in1, in2, out);
+reg[15:0] in1Multiplier, in2Multiplier;
+wire[31:0] outMultiplier;
+vedic_16x16 zap(in1Multiplier, in2Multiplier, outMultiplier);
   initial 
     begin
-    in1 = 4'b0001;
-    in2 = 4'b0010;
+        in1Multiplier = -123;
+    // in1Multiplier = 16'b0000000000000010;
+    in2Multiplier = 16'b0000000000000010;
     #10
-      $display("operand 1 is %b", in1);
-      $display("operand 2 is %b", in2);
-      $display("output is    %b", out);
+      $display("Testing 16 bit multiplier");
+      $display("operand 1 is %b", in1Multiplier);
+      $display("operand 2 is %b", in2Multiplier);
+      $display("output is    %b", outMultiplier);
       $finish ;
     end
 

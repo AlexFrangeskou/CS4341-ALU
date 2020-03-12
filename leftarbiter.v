@@ -12,19 +12,19 @@ endmodule
 
 // test module
 module testbench();
-	reg [15:0] ain = 5555;
-	wire [15:0] aout;
+	reg [15:0] inputLarb = a6'b0000010000000000;
+	wire [15:0] outputLarb;
 	
 	// Right Arbiter instance
-	leftarbiter instan(aout, ain);
+	leftarbiter instan(outputLarb, inputLarb);
 	
 	// start display
 	initial
 		begin
 			#10;
-			$display("Left Arbiter Test");
-			$display("Input is %b", ain);
-			$display("Output is %b", aout);
+			$display("Left Arbiter Test---------");
+			$display("Input is  %b", inputLarb);
+			$display("Output is %b", outputLarb);
 			$finish;
 		end
 endmodule

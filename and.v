@@ -71,23 +71,21 @@ module and16(out,in1,in2);
 endmodule
 
 // Test for and16, uncomment module main3 for testing
-/*
 module main3;
-reg[15:0] in5;
-reg[15:0] in6;
-wire[15:0] out3;
-and16 zap(out3,in5,in6);
+reg[15:0] inAnd1;
+reg[15:0] inAnd2;
+wire[15:0] outAnd1;
+and16 zap(outAnd1, inAnd1,inAnd2);
   initial 
     begin
-    in5 = 56;
-    in6 = 55;
+    inAnd1 = 16'b1010101010101010;
+    inAnd2 = 16'b1010101010100101;
     #10
-      $display("Hello, World");
-      $display("%b", in5);
-      $display("%b", in6);
-      $display("%b", out3);
+      $dislpay ("Testing of 16bit AND----------------");
+      $display("Input1 for and is: %b", inAnd1);
+      $display("Input2 for and is: %b", inAnd2);
+      $display("ANDed output is:   %b", outAnd1);
       $finish ;
     end
 
 endmodule
-*/

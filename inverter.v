@@ -24,15 +24,16 @@ endmodule
 
 //16 bit inverter test module
 module main;
-reg[15:0] i;
-wire[15:0] out ;
-inv16 zap(i, out);
+reg[15:0] inputInverter;
+wire[15:0] outputInverter ;
+inv16 zap(inputInverter, outputInverter);
   initial 
     begin
-      i = 360;
+      inputInverter = 16'b0000000011111111;
       #10
-      $display("Initial value is %b", i);
-      $display("Output value is %b", out);
+      $display("Testing of 16 bit inverter---------");
+      $display("Initial value is %b", inputInverter);
+      $display("Output value is  %b", outputInverter);
       $finish ;
     end
 

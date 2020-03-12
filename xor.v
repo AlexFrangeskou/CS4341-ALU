@@ -1,4 +1,3 @@
-///////////////////////// XOR GATES /////////////////////////
 module xor4(out,in1,in2);
 	input [3:0] in1, in2;
 	output [3:0] out;
@@ -74,24 +73,22 @@ module xor16(out,in1,in2);
 endmodule
 
 // Test for and16, uncomment module main3 for testing
-/*
 module main3;
-reg[15:0] in5;
-reg[15:0] in6;
-wire[15:0] out3;
-xor16 zap(out3,in5,in6);
+reg[15:0] inputXor;
+reg[15:0] inputXor1;
+wire[15:0] outputXor;
+xor16 zap(outputXor,inputXor,inputXor1);
   initial 
     begin
-    in5 = 56;
-    in6 = 55;
+    inputXor = 16'b0000000011111100;
+    inputXor1 = 16'b1111111101010100;
     #10
-      $display("Hello, World");
-      $display("%b", in5);
-      $display("%b", in6);
-      $display("%b", out3);
+      $display("Test of 16 bit XOR gate");
+      $display("%b", inputXor);
+      $display("%b", inputXor1);
+      $display("%b", outputXor);
       $finish ;
     end
 
 endmodule
-*/
 

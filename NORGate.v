@@ -26,24 +26,24 @@ endmodule
 
 // test module
 module testbench();
-	reg[15:0] in1;
-	reg[15:0] in2;
-	wire[15:0] nout;
+	reg[15:0] inputNor1;
+	reg[15:0] inputNor2;
+	wire[15:0] outNor;
 
 	// Nor of these two
-	nor16bit instan(nout, in1, in2);
+	nor16bit instan(outNor, inputNor1, inputNor2);
 	
 	// start display
 	initial
 		begin
 			
-			in1 = 4660;
-			in2 = 17185;	
+			inputNor1 = 16'b0000000011111100;
+			inputNor2 = 16'b1111111101010100;	
 			#10;
-			$display("NOR of two hex values");
-			$display("Input 1 is %b", in1);
-			$display("Input 2 is %b", in2);
-			$display("Output is  %b", nout);
+			$display("Testing NOR output-------");
+			$display("Input 1 is %b", inputNor1);
+			$display("Input 2 is %b", inputNor2);
+			$display("Output is  %b", outNor);
 			$finish;
 		end
 endmodule

@@ -14,19 +14,19 @@ endmodule
 
 // test module
 module testbench();
-	reg [15:0] ain = 4306;
-	wire [15:0] aout;
+	reg [15:0] inputRArb = 15'b0000010000000101;
+	wire [15:0] outputRArb;
 	
 	// Right Arbiter instance
-	rightarbiter instan(aout, ain);
+	rightarbiter instan(outputRArb, inputRArb);
 	
 	// start display
 	initial
 		begin
 			#10;
-			$display("Right Arbiter Test");
-			$display("Input is %b", ain);
-			$display("Output is %b", aout);
+			$display("Testing right arbiter---------");
+			$display("Input is %b", inputRArb);
+			$display("Output is %b", outputRArb);
 			$finish;
 		end
 endmodule

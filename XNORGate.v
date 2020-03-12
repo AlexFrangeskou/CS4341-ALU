@@ -26,23 +26,23 @@ endmodule
 
 // test module
 module testbench();
-	reg[15:0] in1;
-	reg[15:0] in2;
-	wire[15:0] xnout;
+	reg[15:0] inputXNOR;
+	reg[15:0] inputXNOR2;
+	wire[15:0] outputXNOR;
 	
 	// xnor of the two hex values
-	xnor16bit instan(xnout, in1, in2);
+	xnor16bit instan(outputXNOR, inputXNOR, inputXNOR2);
 	
 	// start display
 	initial
 		begin
-			in1 = 1256;
-			in2 = 3564;
+			inputXNOR = 16'b0000000011111100;
+			inputXNOR2 = 16'b1111111101010100;
 			#10;
-			$display("XNOR of two hex values");
-			$display("Input 1 is %b", in1);
-			$display("Input 2 is %b", in2);
-			$display("Output is %b", xnout);
+			$display("Testing of XNOR--------");
+			$display("Input 1 is %b", inputXNOR);
+			$display("Input 2 is %b", inputXNOR2);
+			$display("Output is  %b", outputXNOR);
 			$finish;
 		end
 endmodule
