@@ -1,126 +1,304 @@
-//todo: 
-//  -reconcile differences with the adders
-//  -replace the n-bit adders with adders or proper size
-//  -create actual test module
-
-//2x2 multiplier
-module mult2(out, in1, in2);
-  input [1:0] in1, in2;
-  output [3:0] out;
-  wire[1:0] holdAnd1, holdAnd2, holdAnd3, holdCarry1;
-  and and1(out[0], in1[0], in2[0]),
-    and2(holdAnd1, in1[1], in2[0]),
-    and3(holdAnd2, in1[0], in2[0]),
-    and4(holdAnd3, in1[1], in2[1]);
-
-  //sum needs to go to out[1], carry needs to go to hold
-  halfAdder ha1(out[1], holdCarry1, holdAnd1, holdAnd2),
-    //sum goes to out[2], carry goes to out[3]
-    ha2(out[2], out[3], holdCarry1, holdAnd3);
+module HalfAdder1Bit(a,b,c,s) ;
+  input a,b ;
+  output c,s ;  // carry and sum
+  assign s = a ^ b ;
+  assign c = a & b ;
 endmodule
 
-//4x4 multiplier
-module mult4(in1, in2, out);
-  input [3:0] in1, in2;
-  output [7:0] out;
-  wire[3:0] holdMult1, holdMult2, holdMult3, holdMult4; 
-  wire[5:0] holdAdd1, holdAdd2, operand1, operand2, operand3;
+//4bit adder
+module add_4_bit(a,b,s);
+parameter size=4;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[3:0];
 
-  mult2 multi1(holdMult1, in2[3:2], in1[3:2]),
-    multi2(holdMult2, in2[1:0], in1[3:2]),
-    multi3(holdMult3, in2[3:2], in2[1:0]),
-    multi4(holdMult4, in2[1:0], in2[1:0]);
-
-
-  assign operand1 = {holdMult1,2'b0};
-  assign operand2 = {2'b0, holdMult2};
-  assign operand3 = {2'b0, holdMult4[3:2]}
-  //need 6 bit adder here -step3
-  add6 adder1(holdAdd1, operand1, operand2);
-
-  //4 bit adder here -step7
-  add4 adder2(holdAdd2, holdMult3, operand3);
-
-  //adder of n size here
-  addn adder3(out[7:2], holdAdd1, holdAdd2);
-  assign out[1:0] = holdMult4[1:0];
-
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
 
 
 endmodule
 
+//6bit adder
+module add_6_bit(a,b,s);
+parameter size=6;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[5:0];
 
-//8x8 multiplier
-module mult8(in1, in2, out);
-  input [7:0] in1, in2;
-  output [15:0] out;
-  wire[7:0] holdMult1, holdMult2, holdMult3, holdMult4; 
-  wire[12:0] holdAdd1, holdAdd2, operand1, operand2, operand3;
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
+HalfAdder1Bit ha5(a[4],b[4],carry[4],s[4]);
+HalfAdder1Bit ha6(a[5],b[5],carry[5],s[5]);
 
-  mult4 multi1(holdMult1, in2[7:4], in1[7:4]),
-    multi2(holdMult2, in2[7:4], in1[3:0]),
-    multi3(holdMult3, in2[3:0], in2[7:4]),
-    multi4(holdMult4, in2[3:0], in2[3:0]);
+endmodule
+
+//8bit adder
+module add_8_bit(a,b,s);
+parameter size=8;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[7:0];
+
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
+HalfAdder1Bit ha5(a[4],b[4],carry[4],s[4]);
+HalfAdder1Bit ha6(a[5],b[5],carry[5],s[5]);
+HalfAdder1Bit ha7(a[6],b[6],carry[6],s[6]);
+HalfAdder1Bit ha8(a[7],b[7],carry[7],s[7]);
 
 
-  assign operand1 = {holdMult1,4'b0};
-  assign operand2 = {4'b0, holdMult2};
-  assign operand3 = {4'b0, holdMult4[7:4]}
-  //need 12 bit adder here -step3
-  add6 adder1(holdAdd1, operand1, operand2);
+endmodule
 
-  //8 bit adder here -step7
-  add4 adder2(holdAdd2, holdMult3, operand3);
 
-  //adder of n size here
-  addn adder3(out[15:4], holdAdd1, holdAdd2);
-  assign out[3:0] = holdMult4[3:0];
+//12bit adder
+module add_12_bit(a,b,s);
+parameter size=12;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[11:0];
+
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
+HalfAdder1Bit ha5(a[4],b[4],carry[4],s[4]);
+HalfAdder1Bit ha6(a[5],b[5],carry[5],s[5]);
+HalfAdder1Bit ha7(a[6],b[6],carry[6],s[6]);
+HalfAdder1Bit ha8(a[7],b[7],carry[7],s[7]);
+HalfAdder1Bit ha9(a[8],b[8],carry[8],s[8]);
+HalfAdder1Bit ha10(a[9],b[9],carry[9],s[9]);
+HalfAdder1Bit ha11(a[10],b[10],carry[10],s[10]);
+HalfAdder1Bit ha12(a[11],b[11],carry[11],s[11]);
+
+endmodule
+
+//16bit adder
+module add_16_bit(a,b,s);
+parameter size=16;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[15:0];
+
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
+HalfAdder1Bit ha5(a[4],b[4],carry[4],s[4]);
+HalfAdder1Bit ha6(a[5],b[5],carry[5],s[5]);
+HalfAdder1Bit ha7(a[6],b[6],carry[6],s[6]);
+HalfAdder1Bit ha8(a[7],b[7],carry[7],s[7]);
+HalfAdder1Bit ha9(a[8],b[8],carry[8],s[8]);
+HalfAdder1Bit ha10(a[9],b[9],carry[9],s[9]);
+HalfAdder1Bit ha11(a[10],b[10],carry[10],s[10]);
+HalfAdder1Bit ha12(a[11],b[11],carry[11],s[11]);
+HalfAdder1Bit ha13(a[12],b[12],carry[12],s[12]);
+HalfAdder1Bit ha14(a[13],b[13],carry[13],s[13]);
+HalfAdder1Bit ha15(a[14],b[14],carry[14],s[14]);
+HalfAdder1Bit ha16(a[15],b[15],carry[15],s[15]);
+
+endmodule
+
+//16bit adder
+module add_24_bit(a,b,s);
+parameter size=24;
+input [size-1:0] a;
+input [size-1:0] b;
+output [size-1:0] s;
+wire  carry[23:0];
+
+HalfAdder1Bit ha1(a[0],b[0],carry[0],s[0]);
+HalfAdder1Bit ha2(a[1],b[1],carry[1],s[1]);
+HalfAdder1Bit ha3(a[2],b[2],carry[2],s[2]);
+HalfAdder1Bit ha4(a[3],b[3],carry[3],s[3]);
+HalfAdder1Bit ha5(a[4],b[4],carry[4],s[4]);
+HalfAdder1Bit ha6(a[5],b[5],carry[5],s[5]);
+HalfAdder1Bit ha7(a[6],b[6],carry[6],s[6]);
+HalfAdder1Bit ha8(a[7],b[7],carry[7],s[7]);
+HalfAdder1Bit ha9(a[8],b[8],carry[8],s[8]);
+HalfAdder1Bit ha10(a[9],b[9],carry[9],s[9]);
+HalfAdder1Bit ha11(a[10],b[10],carry[10],s[10]);
+HalfAdder1Bit ha12(a[11],b[11],carry[11],s[11]);
+HalfAdder1Bit ha13(a[12],b[12],carry[12],s[12]);
+HalfAdder1Bit ha14(a[13],b[13],carry[13],s[13]);
+HalfAdder1Bit ha15(a[14],b[14],carry[14],s[14]);
+HalfAdder1Bit ha16(a[15],b[15],carry[15],s[15]);
+HalfAdder1Bit ha17(a[16],b[16],carry[16],s[16]);
+HalfAdder1Bit ha18(a[17],b[17],carry[17],s[17]);
+HalfAdder1Bit ha19(a[18],b[18],carry[18],s[18]);
+HalfAdder1Bit ha20(a[19],b[19],carry[19],s[19]);
+HalfAdder1Bit ha21(a[20],b[20],carry[20],s[20]);
+HalfAdder1Bit ha22(a[21],b[21],carry[21],s[21]);
+HalfAdder1Bit ha23(a[22],b[22],carry[22],s[22]);
+HalfAdder1Bit ha24(a[23],b[23],carry[23],s[23]);
+HalfAdder1Bit ha25(a[24],b[24],carry[24],s[24]);
+
+endmodule
+
+module vedic_2_x_2(a,b,c);
+input [1:0]a;
+input [1:0]b;
+output [3:0]c;
+wire [3:0]c;
+wire [3:0]temp;
+//stage 1
+// four multiplication operation of bits accourding to vedic logic done using and gates 
+assign c[0]=a[0]&b[0]; 
+assign temp[0]=a[1]&b[0];
+assign temp[1]=a[0]&b[1];
+assign temp[2]=a[1]&b[1];
+//stage two 
+// using two half adders 
+ha z1(temp[0],temp[1],c[1],temp[3]);
+ha z2(temp[2],temp[3],c[2],c[3]);
+endmodule
+
+
+module vedic_4_x_4(a,b,c);
+input [3:0]a;
+input [3:0]b;
+output [7:0]c;
+
+wire [3:0]q0;	
+wire [3:0]q1;	
+wire [3:0]q2;
+wire [3:0]q3;	
+wire [7:0]c;
+wire [3:0]temp1;
+wire [5:0]temp2;
+wire [5:0]temp3;
+wire [5:0]temp4;
+wire [3:0]q4;
+wire [5:0]q5;
+wire [5:0]q6;
+// using 4 2x2 multipliers
+vedic_2_x_2 z1(a[1:0],b[1:0],q0[3:0]);
+vedic_2_x_2 z2(a[3:2],b[1:0],q1[3:0]);
+vedic_2_x_2 z3(a[1:0],b[3:2],q2[3:0]);
+vedic_2_x_2 z4(a[3:2],b[3:2],q3[3:0]);
+// stage 1 adders 
+assign temp1 ={2'b0,q0[3:2]};
+add_4_bit z5(q1[3:0],temp1,q4);
+assign temp2 ={2'b0,q2[3:0]};
+assign temp3 ={q3[3:0],2'b0};
+add_6_bit z6(temp2,temp3,q5);
+assign temp4={2'b0,q4[3:0]};
+// stage 2 adder 
+add_6_bit z7(temp4,q5,q6);
+// fnal output assignment 
+assign c[1:0]=q0[1:0];
+assign c[7:2]=q6[5:0];
+
+
+endmodule
+
+
+module vedic_8X8(a,b,c);
+   
+input [7:0]a;
+input [7:0]b;
+output [15:0]c;
+
+wire [15:0]q0;	
+wire [15:0]q1;	
+wire [15:0]q2;
+wire [15:0]q3;	
+wire [15:0]c;
+wire [7:0]temp1;
+wire [11:0]temp2;
+wire [11:0]temp3;
+wire [11:0]temp4;
+wire [7:0]q4;
+wire [11:0]q5;
+wire [11:0]q6;
+// using 4 4x4 multipliers
+vedic_4_x_4 z1(a[3:0],b[3:0],q0[15:0]);
+vedic_4_x_4 z2(a[7:4],b[3:0],q1[15:0]);
+vedic_4_x_4 z3(a[3:0],b[7:4],q2[15:0]);
+vedic_4_x_4 z4(a[7:4],b[7:4],q3[15:0]);
+
+// stage 1 adders 
+assign temp1 ={4'b0,q0[7:4]};
+add_8_bit z5(q1[7:0],temp1,q4);
+assign temp2 ={4'b0,q2[7:0]};
+assign temp3 ={q3[7:0],4'b0};
+add_12_bit z6(temp2,temp3,q5);
+assign temp4={4'b0,q4[7:0]};
+// stage 2 adder
+add_12_bit z7(temp4,q5,q6);
+// fnal output assignment 
+assign c[3:0]=q0[3:0];
+assign c[15:4]=q6[11:0];
+
+
 
 endmodule
 
 
 
-//16x16 multiplier
-module mult16(in1, in2, out);
-  input [15:0] in1, in2;
-  output [31:0] out;
-  wire[15:0] holdMult1, holdMult2, holdMult3, holdMult4; 
-  wire[24:0] holdAdd1, holdAdd2, operand1, operand2, operand3;
+module vedic_16x16(a,b,c);
+input [15:0]a;
+input [15:0]b;
+output [31:0]c;
 
-  mult4 multi1(holdMult1, in2[15:8], in1[15:8]),
-    multi2(holdMult2, in2[15:8], in1[7:0]),
-    multi3(holdMult3, in2[7:0], in2[15:8]),
-    multi4(holdMult4, in2[7:0], in2[7:0]);
+wire [15:0]q0;	
+wire [15:0]q1;	
+wire [15:0]q2;
+wire [15:0]q3;	
+wire [31:0]c;
+wire [15:0]temp1;
+wire [23:0]temp2;
+wire [23:0]temp3;
+wire [23:0]temp4;
+wire [15:0]q4;
+wire [23:0]q5;
+wire [23:0]q6;
+// using 4 8x8 multipliers
+vedic_8X8 z1(a[7:0],b[7:0],q0[15:0]);
+vedic_8X8 z2(a[15:8],b[7:0],q1[15:0]);
+vedic_8X8 z3(a[7:0],b[15:8],q2[15:0]);
+vedic_8X8 z4(a[15:8],b[15:8],q3[15:0]);
 
+// stage 1 adders 
+assign temp1 ={8'b0,q0[15:8]};
+add_16_bit z5(q1[15:0],temp1,q4);
+assign temp2 ={8'b0,q2[15:0]};
+assign temp3 ={q3[15:0],8'b0};
+add_24_bit z6(temp2,temp3,q5);
+assign temp4={8'b0,q4[15:0]};
 
-  assign operand1 = {holdMult1,8'b0};
-  assign operand2 = {8'b0, holdMult2};
-  assign operand3 = {8'b0, holdMult4[15:8]}
-  //need 12 bit adder here -step3
-  add6 adder1(holdAdd1, operand1, operand2);
+//stage 2 adder
+add_24_bit z7(temp4,q5,q6);
+// fnal output assignment 
+assign c[7:0]=q0[7:0];
+assign c[31:8]=q6[23:0];
 
-  //8 bit adder here -step7
-  add4 adder2(holdAdd2, holdMult3, operand3);
-
-  //adder of n size here
-  addn adder3(out[31:8], holdAdd1, holdAdd2);
-  assign out[7:0] = holdMult4[7:0];
 
 endmodule
 
 
-//16x16 multiplier test module
-  //INCOMPLETE
 module main;
-reg[15:0] i = 16'hff;
-wire[15:0] out ;
-inv16 zap(i, out);
+reg[3:0] in1, in2;
+wire[7:0] out ;
+vedic_4_x_4 zap(in1, in2, out);
   initial 
     begin
+    in1 = 4'b0001;
+    in2 = 4'b0010;
     #10
-      $display("Hello, World");
-      $display("%h", i);
-      $display("%h", out);
+      $display("operand 1 is %b", in1);
+      $display("operand 2 is %b", in2);
+      $display("output is    %b", out);
       $finish ;
     end
 
