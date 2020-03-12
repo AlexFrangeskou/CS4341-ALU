@@ -14,3 +14,4 @@ XNOR gate
 OR gate
 Right Arbiter
 Left Arbiter
+We also need to add division but this can be done in behavioral.
