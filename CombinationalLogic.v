@@ -272,7 +272,14 @@ endmodule // Mux16Channel
 //----------------------------------------------------------------------
 
  //multiplier
-   module HalfAdder1Bit(a,b,c,s) ;
+module HalfAdder1(a,b,s,c) ;
+  input a,b ;
+  output c,s ;  // carry and sum
+  assign s = a ^ b ;
+  assign c = a & b ;
+endmodule
+
+module HalfAdder1Bit(a,b,c,s) ;
   input a,b ;
   output c,s ;  // carry and sum
   assign s = a ^ b ;
@@ -432,8 +439,8 @@ assign temp[1]=a[0]&b[1];
 assign temp[2]=a[1]&b[1];
 //stage two 
 // using two half adders 
-HalfAdder1Bit z1(temp[0],temp[1],c[1],temp[3]);
-HalfAdder1Bit z2(temp[2],temp[3],c[2],c[3]);
+HalfAdder1 z1(temp[0],temp[1],c[1],temp[3]);
+HalfAdder1 z2(temp[2],temp[3],c[2],c[3]);
 endmodule
 
 
@@ -776,7 +783,7 @@ module testbench();
 	leftarbiter instan(outputLarb, inputLarb);
 
    //multiplexer componentss
-   reg[15:0] channelTest1, ChannelTest2, selectorBit1, selectorBit2; 
+   reg[15:0] channelTest1, channelTest2, selectorBit1, selectorBit2; 
    wire[15:0] outMultiplexer1, outMultiplexer2;
    Multiplexer mux1(channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, 
    channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest2, selectorBit1, outMultiplexer1);
@@ -849,7 +856,7 @@ module testbench();
    inputInverter = 16'b0000000011111111;
 
    channelTest1 = 16'b000000010000000;
-   ChannelTest2 = 16'b000000000000001;
+   channelTest2 = 16'b000000000000001;
    selectorBit1 = 16'b1000000000000000;
    selectorBit2 = 16'b0000000000000001;
 
@@ -881,7 +888,7 @@ module testbench();
 
    #10;
    $display("\n");
-	$display("Testing of XNOR--------");
+	$display("Testing of XNOR");
    $display("==============================================");
 	$display("Input 1 is %b", inputXNOR);
 	$display("Input 2 is %b", inputXNOR2);
@@ -889,14 +896,14 @@ module testbench();
 
    #10;
    $display("\n");
-	$display("Testing right arbiter---------");
+	$display("Testing right arbiter");
    $display("==============================================");
 	$display("Input is %b", inputRArb);
 	$display("Output is %b", outputRArb);
 
 	#10;
    $display("\n");
-	$display("Testing OR output-------");
+	$display("Testing OR output-");
    $display("==============================================");
 	$display("Input 1 is %b", inputOr1);
 	$display("Input 2 is %b", inputOr2);
@@ -904,7 +911,7 @@ module testbench();
 
 	#10;
    $display("\n");
-	$display("Testing NOR output-------");
+	$display("Testing NOR output");
    $display("==============================================");
 	$display("Input 1 is %b", inputNor1);
 	$display("Input 2 is %b", inputNor2);
@@ -912,7 +919,7 @@ module testbench();
 
    #10;
    $display("\n");
-   $display("Testing 16 bit NAND-------");
+   $display("Testing 16 bit NAND");
    $display("==============================================");
    $display("operand 1 is %b", inNand);
    $display("operand 2 is %b", inNand1);
@@ -920,7 +927,7 @@ module testbench();
 			
    #10;
    $display("\n");
-	$display("Left Arbiter Test---------");
+	$display("Left Arbiter Test-");
    $display("==============================================");
 	$display("Input is  %b", inputLarb);
 	$display("Output is %b", outputLarb);
@@ -942,7 +949,7 @@ module testbench();
 
    #10
    $display("\n");
-   $display("Testing of 16 bit inverter---------");
+   $display("Testing of 16 bit inverter");
    $display("==============================================");
    $display("Initial value is %b", inputInverter);
    $display("Output value is  %b", outputInverter);
@@ -1024,7 +1031,8 @@ module testbench();
 
    #10
    $display("\n");
-   $display("Testing of 16bit AND----------------");
+   $display("Testing of 16bit AND");
+   $display("==============================================");
    $display("Input1 for and is: %b", inAnd1);
    $display("Input2 for and is: %b", inAnd2);
    $display("ANDed output is:   %b", outAnd1);

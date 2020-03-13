@@ -1,3 +1,10 @@
+module HalfAdder1(a,b,s,c) ;
+  input a,b ;
+  output c,s ;  // carry and sum
+  assign s = a ^ b ;
+  assign c = a & b ;
+endmodule
+
 module HalfAdder1Bit(a,b,c,s) ;
   input a,b ;
   output c,s ;  // carry and sum
@@ -158,8 +165,8 @@ assign temp[1]=a[0]&b[1];
 assign temp[2]=a[1]&b[1];
 //stage two 
 // using two half adders 
-HalfAdder1Bit z1(temp[0],temp[1],c[1],temp[3]);
-HalfAdder1Bit z2(temp[2],temp[3],c[2],c[3]);
+HalfAdder1 z1(temp[0],temp[1],c[1],temp[3]);
+HalfAdder1 z2(temp[2],temp[3],c[2],c[3]);
 endmodule
 
 
@@ -292,8 +299,7 @@ wire[31:0] outMultiplier;
 vedic_16x16 zap(in1Multiplier, in2Multiplier, outMultiplier);
   initial 
     begin
-        in1Multiplier = -123;
-    // in1Multiplier = 16'b0000000000000010;
+    in1Multiplier = 16'b0000000000000010;
     in2Multiplier = 16'b0000000000000010;
     #10
       $display("Testing 16 bit multiplier");
@@ -302,5 +308,18 @@ vedic_16x16 zap(in1Multiplier, in2Multiplier, outMultiplier);
       $display("output is    %b", outMultiplier);
       $finish ;
     end
-
+// reg[3:0] in1Multiplier, in2Multiplier;
+// wire[7:0] outMultiplier;
+// vedic_4_x_4 zap(in1Multiplier, in2Multiplier, outMultiplier);
+//   initial 
+//     begin
+//     in1Multiplier = 8;
+//     in2Multiplier = 2;
+//     #10
+//       $display("Testing 16 bit multiplier");
+//       $display("operand 1 is %d", in1Multiplier);
+//       $display("operand 2 is %d", in2Multiplier);
+//       $display("output is    %d", outMultiplier);
+//       $finish ;
+//     end
 endmodule

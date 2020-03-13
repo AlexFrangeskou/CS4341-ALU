@@ -23,7 +23,7 @@ module Multiplexer(Ch15,Ch14,Ch13,Ch12,Ch11,Ch10,Ch9,Ch8,Ch7,Ch6,Ch5,Ch4,Ch3,Ch2
 endmodule // Mux16Channel
 
 module testBench;
-reg[15:0] channelTest1, ChannelTest2, selectorBit1, selectorBit2; 
+reg[15:0] channelTest1, channelTest2, selectorBit1, selectorBit2; 
 wire[15:0] outMultiplexer1, outMultiplexer2;
 Multiplexer mux1(channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, 
 channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTest2, selectorBit1, outMultiplexer1);
@@ -33,7 +33,7 @@ channelTest1, channelTest1, channelTest1, channelTest1, channelTest1, channelTes
   initial 
     begin
     channelTest1 = 16'b000000010000000;
-    ChannelTest2 = 16'b000000000000001;
+    channelTest2 = 16'b000000000000010;
     selectorBit1 = 16'b1000000000000000;
     selectorBit2 = 16'b0000000000000001;
     #10
