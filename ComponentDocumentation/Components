@@ -1,0 +1,18 @@
+Decoder 4-16
+Encoder 16-4
+Half-Adder
+Full-Adder
+Addition
+Subtractor
+Multiplexor
+Multiplier
+AND gate
+NAND gate
+NOR gate
+NOT gate
+XOR gate
+XNOR gate
+OR gate
+Right Arbiter
+Left Arbiter
+We also need to add division but this can be done in behavioral.
